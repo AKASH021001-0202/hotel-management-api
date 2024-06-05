@@ -18,10 +18,9 @@ bookingRouter.get("/all-room", (req, res) => {
     filteredBookings = filteredBookings.filter(booking => booking.customerId === customerId);
   }
 
-  // Debug: Log filtered bookings
+
   console.log("Filtered Bookings:", filteredBookings);
 
-  // Construct response based on selected fields
   const response = filteredBookings.map(booking => {
     let result = {};
     const room = rooms.find(room => room.id === booking.roomId);
@@ -102,29 +101,29 @@ bookingRouter.patch("/assign-booking/:id", (req, res) => {
   const { customerId, roomId } = body;
   const bookingId = req.params.id;
 
-  // Find the booking, customer, and room objects in the arrays
+
   const bookingObj = bookings.find((booking) => booking.id === bookingId);
   const customerObj = customers.find((customer) => customer.id === customerId);
   const roomObj = rooms.find((room) => room.id === roomId);
 
-  // Check if all required objects exist
+
   if (bookingObj && customerObj && roomObj) {
-    // Update the booking with customer and room information
+
     bookingObj.customerId = customerId;
     bookingObj.roomId = roomId;
     bookingObj.status = "Complete";
-    // Ensure customer object has a bookings array
+    
     if (!customerObj.rooms) {
       customerObj.roomId = [];
     }
     customerObj.roomId.push(roomId);
 
    
-    // Log success message and send response
+   
     console.log("Booking Assignment Success!");
     res.send({ msg: "Booking Assignment Success!" });
   } else {
-    // Log error message and send response
+    
     console.log("Booking, customer, or room not found");
     res
       .status(400)

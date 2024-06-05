@@ -11,23 +11,22 @@ roomsRouter.get("/" ,(req , res) => {
 roomsRouter.get("/all-room", (req, res) => {
   const { customerId, roomId } = req.body;
 
-  // Filter rooms based on roomId if provided
+ 
   let filteredRooms = rooms;
   if (roomId) {
     filteredRooms = filteredRooms.filter(room => room.id === roomId);
   }
 
-  // Construct response for all rooms with their bookings
+
   const response = filteredRooms.map(room => {
-    // Find bookings for the current room
+  
     let roomBookings = bookings.filter(booking => booking.roomId === room.id);
 
-    // Filter roomBookings based on customerId if provided
     if (customerId) {
       roomBookings = roomBookings.filter(booking => booking.customerId === customerId);
     }
 
-    // If there are no bookings, return room with empty booking details
+  
     if (roomBookings.length === 0) {
       return {
         roomName: room.name,
@@ -39,7 +38,7 @@ roomsRouter.get("/all-room", (req, res) => {
       };
     }
 
-    // Get the first booking (or handle multiple bookings as needed)
+
     const booking = roomBookings[0];
     const customer = customers.find(customer => customer.id === booking.customerId);
 
